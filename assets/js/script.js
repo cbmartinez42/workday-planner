@@ -47,11 +47,9 @@ setInterval(update, 1000); // should this be every second, or less often to use 
 
 // save button
 
-
-// initialize planner 
-
 });
 
+// initialize planner 
 function initializePlanner() {
     let starterPlanner = {};
 
