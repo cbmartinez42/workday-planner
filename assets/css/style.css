@@ -5,8 +5,8 @@ body {
 }
 
 textarea {
-  background: transparent;
-  border: none;
+  background: transparent;  /* transparent */
+  border: 1px solid black; /* none */
   resize: none;
   color: #000000;
   border-left: 1px solid black;
@@ -64,9 +64,17 @@ textarea {
   border-bottom-right-radius: 15px;
   background-color: #06AED5;
   color: white;
+  align-self: center;
+  font-size: 30px;
+  height: 60px;
+  
 }
 
-.saveBtn i:hover {
-  font-size: 20px;
+.saveBtn:hover {
+  font-size: 40px;
   transition: all .3s ease-in-out;
+}
+
+.far {
+  justify-items: center;
 }
