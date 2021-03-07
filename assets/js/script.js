@@ -2,6 +2,7 @@ let currentHour = moment().format('H');
 let today = moment();
 
 
+
 $(document).ready(function() {
 
     // show date and time in the jumbotron and update time continuously 
@@ -17,9 +18,15 @@ $(document).ready(function() {
     restoreData();
 
     // save button eventlistener
-    $('button').click(function() {
+    $('.saveBtn').click(function() {
         console.log('Save Button clicked!');
         saveData(this.id)
+
+        $('.delete-button').click(function() {
+            localStorage.clear();
+            location.reload();
+        });
+        
     });
 });
 
@@ -32,14 +39,13 @@ function saveData(btnId){
 
 // Retrieve descriptions from localStorage and insert into document
 function restoreData() {
-    for( i = 8; i < 18; i++ ) {
+    for(let i = 8; i < 18; i++) {
         var eventDescText = localStorage.getItem(i);
         var textareaId = "textarea" + i;
         var textarea = document.getElementById(textareaId);
         textarea.value = eventDescText;
     }
 }
-
 
 // initialize planner 
 function initializePlanner() {
@@ -73,7 +79,6 @@ function initializePlanner() {
   
         // append all items to the container
         $('.container').append(wrapper);
-
     }
 }
 
