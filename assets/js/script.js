@@ -1,90 +1,94 @@
-// let myPlanner = document.getElementById('#myPlanner')
-
+let currentHour = moment().format('H');
+let today = moment();
 
 
 $(document).ready(function() {
-    // show today's date in the jumbotron
-    let today = moment();
+
+    // show date and time in the jumbotron and update time continuously 
     $("#currentDay").text(today.format("dddd, MMM Do, YYYY"));
-
-    // show time in the jumbotron and update it
-    let currentTime =  moment().format("h:mm a");
-    $("#currentTime").text(time);
-
-    function update(){
+    function updateTime(){
         $("#currentTime").text(moment().format("h:mm a"));
-        }
-    setInterval(update, 1000); // should this be every second, or less often to use less resources?
+    }
+    setInterval(updateTime, 1000); 
 
-    initializePlanner()
-    // // get localstorage if it exists or create blank planner
-
-    // 	let planner = initializePlanner();
-
-        // for (var time in planner) {
-        // 	console.log(time, planner[time]);
-        // 	let tr = $("<tr>")
-        //         .addClass("row time-block");
-        // 	let tdTime = $("<td>").addClass("hour").text(time);
-        //         // allow user to click in the activity section to type an activity
-        //     let tdActivity = $("<td>").addClass("textArea");
-        // }
-
-        // let thisTime;
+     // build planner, set colors according to past/present/future, and restore localstorage data if it exists
+    initializePlanner();
+    updateTextareaColor();
+    restoreData();
 
     // save button eventlistener
-    $('.far').click(function() {
+    $('button').click(function() {
         console.log('Save Button clicked!');
+        saveData(this.id)
     });
-    
 });
 
+// save to localstorage
+function saveData(btnId){
+    let textareaId = "textarea" + btnId;
+    let textarea = document.getElementById(textareaId);
+    localStorage.setItem(btnId, textarea.value);
+}
+
+// Retrieve descriptions from localStorage and insert into document
+function restoreData() {
+    for( i = 8; i < 18; i++ ) {
+        var eventDescText = localStorage.getItem(i);
+        var textareaId = "textarea" + i;
+        var textarea = document.getElementById(textareaId);
+        textarea.value = eventDescText;
+    }
+}
 
 
 // initialize planner 
 function initializePlanner() {
-// let starterPlanner = [];
-let th1 = $('<th>')
-    .text('Time');
-let th2 = $('<th>')
-.text('Activity');
-let th3 = $('<th>')
-.text('Save');
-let tr = $("<tr>")
-    // .addClass("row time-block");
-$('#myPlanner').append(tr);
-$('#myPlanner').append([th1, th2, th3]);
 
-for (var i = 8; i < 18; i++) {
-    const plannerTime = moment(i, 'H').format('h a');
-    const textareaTime = moment(i, 'H').format('h');
-    const div = $('<div>').addClass('saveBtn');
-    const save = $("<i>").addClass("far fa-save");
-    const activityHour = document.getElementsByClassName('activity-hour')
-    const activityEl = document.getElementsByTagName('textarea')
-    div.append(save)
-    let tr = $("<tr>")
-        // .addClass("row time-block");
-    let col1 = $("<td>")
-        .addClass("time-block hour")
-        .text(plannerTime);
-    let col2 = $("<td>")
-        .append($("<textarea>"))
-        .addClass(textareaTime);
-    let col3 = $("<td>")
-        .append(div)
+    for (var i = 8; i < 18; i++) {
+        const plannerTime = moment(i, 'H').format('h a');
+        const wrapper = $('<div>')
+            .addClass('time-block row')
+            .attr('id', 'h' + i + 'time')
 
-    // change color when the time has elapsed
-    if (moment(time, "h").isSame(moment(), plannerTime)) {
-        $('textarea').addClass("present");
-    } else if (moment(time, "h a").isAfter(moment())) {
-        activityHour = "future";
-    } else if (moment(time, "h a").isBefore(moment())) {
-        activityHour = "past";
+        // div for the hour
+        const hourDiv = $('<div>')
+            .addClass('hour col-md-1')
+            .text(plannerTime);
+            wrapper.append(hourDiv);
+ 
+        // textarea for activities
+        const textArea = $('<textarea>')
+            .addClass('description col-md-10')
+            // id so that it can be added/called for localstorage
+            .attr('id', 'textarea' + i);
+            wrapper.append(textArea);
+
+        // save button
+        const saveButton = $('<button>')
+            .addClass('saveBtn col-md-1')
+            // id so that it can be linked to textarea for localstorage
+            .attr('id', i)
+            .html("<i class='far fa-save'></i>");
+            wrapper.append(saveButton);
+  
+        // append all items to the container
+        $('.container').append(wrapper);
+
     }
-
-        
-    $(tr).append([col1, col2, col3])
-    $('#myPlanner').append(tr);
 }
+
+// update colors based on past/present/future
+function updateTextareaColor() {
+    for(let i = 8; i < 18; i++ ) {
+        let textareaId = "textarea" + i;
+        let eventDesc = document.getElementById(textareaId);
+        let eachHour = i;
+        if( eachHour == currentHour ){
+            eventDesc.classList.add('present');
+        }else if( eachHour < currentHour ){
+            eventDesc.classList.add('past');
+        } else {
+            $(eventDesc).addClass('future');
+        }
+    } 
 }

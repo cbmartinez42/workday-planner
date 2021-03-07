@@ -5,13 +5,12 @@ body {
 }
 
 textarea {
-  background: transparent;  /* transparent */
-  border: 1px solid black; /* none */
+  background: transparent;  
+  border: none; 
   resize: none;
   color: #000000;
   border-left: 1px solid black;
   padding: 10px;
-  width: 700px;
 }
 
 .jumbotron {
@@ -41,6 +40,7 @@ textarea {
   background-color: #ffffff;
   color: #000000;
   border-top: 1px dashed #000000;
+  width: 100px;
 }
 
 .past {
@@ -67,14 +67,10 @@ textarea {
   align-self: center;
   font-size: 30px;
   height: 60px;
-  
+  width: 100px;
 }
 
 .saveBtn:hover {
   font-size: 40px;
   transition: all .3s ease-in-out;
-}
-
-.far {
-  justify-items: center;
 }
