@@ -1,8 +1,6 @@
 let currentHour = moment().format('H');
 let today = moment();
 
-
-
 $(document).ready(function() {
 
     // show date and time in the jumbotron and update time continuously 
@@ -19,14 +17,13 @@ $(document).ready(function() {
 
     // save button eventlistener
     $('.saveBtn').click(function() {
-        console.log('Save Button clicked!');
-        saveData(this.id)
+        saveData(this.id)     
+    });
 
-        $('.delete-button').click(function() {
-            localStorage.clear();
-            location.reload();
-        });
-        
+    // delete button listener and function
+    $('.delete-button').click(function() {
+        localStorage.clear();
+        location.reload();
     });
 });
 
@@ -60,22 +57,23 @@ function initializePlanner() {
         const hourDiv = $('<div>')
             .addClass('hour col-md-1')
             .text(plannerTime);
-            wrapper.append(hourDiv);
+        wrapper.append(hourDiv);
  
         // textarea for activities
         const textArea = $('<textarea>')
             .addClass('description col-md-10')
             // id so that it can be added/called for localstorage
             .attr('id', 'textarea' + i);
-            wrapper.append(textArea);
+        wrapper.append(textArea);
 
         // save button
         const saveButton = $('<button>')
             .addClass('saveBtn col-md-1')
             // id so that it can be linked to textarea for localstorage
             .attr('id', i)
+            .attr('title', 'Save entry')
             .html("<i class='far fa-save'></i>");
-            wrapper.append(saveButton);
+        wrapper.append(saveButton);
   
         // append all items to the container
         $('.container').append(wrapper);
